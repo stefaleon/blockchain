@@ -17,7 +17,7 @@ class Block {
   }
 
   static genesis() {
-    return new this('Genesis time', 'no-last-hash', 'a-fake-hash', []);
+    return new this('1111111111', '----------', 'g3n3515', []);
   }
 
   static mineBlock(lastBlock, data) {
