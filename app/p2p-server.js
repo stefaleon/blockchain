@@ -27,7 +27,7 @@ class P2pServer {
 
   connectSocket(socket) {
     this.sockets.push(socket);
-    console.log('Socket connected');
+    console.log('Socket connected. Socket url is:', socket.url);
   }
 }
 
