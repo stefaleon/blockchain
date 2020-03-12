@@ -2,8 +2,8 @@ const Websocket = require('ws');
 
 const P2P_PORT = process.env.P2P_PORT || 5001;
 const peers = process.env.PEERS ? process.env.PEERS.split(',') : [];
-// the env vars will be like HTTP_PORT=3002 P2P_PORT=5003
-// PEERS=ws://localhost:5001,ws://localhost:5001,... hence the split on the comma above
+// the env vars will be like HTTP_PORT=3002 P2P_PORT=5002
+// PEERS=ws://localhost:5001,ws://localhost:5002,... hence the split on the comma above
 
 class P2pServer {
   constructor(blockchain) {
@@ -28,6 +28,15 @@ class P2pServer {
   connectSocket(socket) {
     this.sockets.push(socket);
     console.log('Socket connected. Socket url is:', socket.url);
+    this.messageHandler(socket);
+    socket.send(JSON.stringify(this.blockchain.chain));
+  }
+
+  messageHandler(socket) {
+    socket.on('message', message => {
+      const data = JSON.parse(message);
+      console.log('data', data);
+    });
   }
 }
 
