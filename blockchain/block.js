@@ -24,11 +24,18 @@ class Block {
   }
 
   static mineBlock(lastBlock, data) {
-    const timestamp = Date.now();
     const lastHash = lastBlock.hash;
-    const hash = Block.hash(timestamp, lastHash, data);
+    let timestamp;
+    let hash;
+    let nonce = 0;
 
-    return new this(timestamp, lastHash, hash, data);
+    do {
+      nonce++;
+      timestamp = Date.now();
+      hash = Block.hash(timestamp, lastHash, data, nonce);
+    } while (hash.substring(0, DIFFICULTY) !== '0'.repeat(DIFFICULTY));
+
+    return new this(timestamp, lastHash, hash, data, nonce);
   }
 
   static hash(timestamp, lastHash, data, nonce) {
