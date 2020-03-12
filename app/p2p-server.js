@@ -29,7 +29,7 @@ class P2pServer {
     this.sockets.push(socket);
     console.log('Socket connected. Socket url is:', socket.url);
     this.messageHandler(socket);
-    socket.send(JSON.stringify(this.blockchain.chain));
+    this.sendChain(socket);
   }
 
   messageHandler(socket) {
@@ -38,6 +38,14 @@ class P2pServer {
       console.log('data', data);
       this.blockchain.replaceChain(data);
     });
+  }
+
+  sendChain(socket) {
+    socket.send(JSON.stringify(this.blockchain.chain));
+  }
+
+  syncChains() {
+    this.sockets.forEach(socket => this.sendChain(socket));
   }
 }
 
